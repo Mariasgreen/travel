@@ -8,12 +8,12 @@ const getColor = () => '#' + (Math.random().toString(16) + '000000').substring(2
 
 const animateMenu = () => {
   menu.style.backgroundColor = getColor();
-  menu.style.transition = 'all 6s';
+  window.requestAnimationFrame(animateMenu);
 };
 
 function toggleBurger() {
   menu.classList.toggle('header__menu_active');
-  setInterval(animateMenu, 1000);
+  animateMenu();
 }
 
 
