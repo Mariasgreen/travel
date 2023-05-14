@@ -1,0 +1,80 @@
+/* eslint-disable max-len */
+const loadTrips = async (cb) => {
+  const result = await fetch('date.json');
+  const data = await result.json();
+  return data;
+};
+
+const dateSelect = document.querySelectorAll('select[name = "dates"]');
+const countSelect = document.querySelectorAll('select[name = "people"]');
+const textData = document.querySelector('.reservation__data');
+const textPrice = document.querySelector('.reservation__price');
+// const text = document.querySelector('reservation__people');
+
+
+const dateOptions = async (select) => {
+  const data = await loadTrips();
+  const options = data.map(item => {
+    const option = document.createElement('option');
+    option.value = item.date;
+    option.textContent = option.value;
+
+    return option;
+  });
+
+  select.append(...options);
+};
+
+
+const countOptions = async (select, num) => {
+  select.innerHTML = '';
+  const option = document.createElement('option');
+  select.append(option);
+  const data = await loadTrips();
+
+
+  data.forEach(item => {
+    if (dateSelect[num].value === item.date) {
+      for (let i = item['min-people']; i <= item['max-people']; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = option.value;
+
+        countSelect[num].append(option);
+      }
+    }
+  });
+};
+
+0;
+
+
+const count = async (index) => {
+  const data = await loadTrips();
+  const selectedDate = dateSelect[index].value;
+  const selectedCount = countSelect[index].value;
+
+  data.forEach(item => {
+    if (item.date === selectedDate && item['min-people'] <= selectedCount && item['max-people'] >= selectedCount) {
+      const totalPrice = item.price * selectedCount;
+      textData.textContent = `${selectedDate}, ${selectedCount} человек`;
+      textPrice.textContent = ` ${totalPrice} ₽ `;
+    }
+  });
+};
+
+
+dateSelect.forEach((item, index) => {
+  dateOptions(item);
+  item.addEventListener('input', () => {
+    countOptions(countSelect[index], index);
+  });
+});
+
+
+countSelect.forEach((item, index) => {
+  item.addEventListener('input', () => {
+    count(index);
+  });
+});
+
