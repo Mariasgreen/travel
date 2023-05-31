@@ -1,12 +1,16 @@
+import './modules/exp.js';
+import './modules/xhr.js';
+import './modules/acc.js';
+import './modules/burger.js';
+import './modules/fly.js';
+import './modules/tours.js';
+import timing from './modules/timer.js';
+const {deadline,
+  time} = timing;
 
-import tim from './modules/timer.js';
-const{deadline, 
-time} = tim;
+
+time(deadline);
 
 
-
-
-
-time(deadline)
 
 
